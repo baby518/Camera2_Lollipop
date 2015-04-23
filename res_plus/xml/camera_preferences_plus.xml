@@ -26,7 +26,7 @@
                 android:title="@string/pref_camera_save_location_title"/>
         <!-- Exposure Compensation -->
         <com.android.camera.settings.ManagedSwitchPreference
-                android:defaultValue="false"
+                android:defaultValue="true"
                 android:key="pref_camera_exposure_compensation_key"
                 android:title="@string/pref_camera_exposure_compensation"/>
     </PreferenceCategory>

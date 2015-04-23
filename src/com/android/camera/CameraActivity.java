@@ -108,11 +108,7 @@ import com.android.camera.one.OneCameraManager;
 import com.android.camera.session.CaptureSession;
 import com.android.camera.session.CaptureSessionManager;
 import com.android.camera.session.CaptureSessionManager.SessionListener;
-import com.android.camera.settings.AppUpgrader;
-import com.android.camera.settings.CameraSettingsActivity;
-import com.android.camera.settings.Keys;
-import com.android.camera.settings.SettingsManager;
-import com.android.camera.settings.SettingsUtil;
+import com.android.camera.settings.*;
 import com.android.camera.tinyplanet.TinyPlanetFragment;
 import com.android.camera.ui.AbstractTutorialOverlay;
 import com.android.camera.ui.DetailsDialog;
@@ -1402,7 +1398,11 @@ public class CameraActivity extends QuickActivity
         mSettingsManager = getServices().getSettingsManager();
         AppUpgrader appUpgrader = new AppUpgrader(this);
         appUpgrader.upgrade(mSettingsManager);
-        Keys.setDefaults(mSettingsManager, mAppContext);
+        /* ZhangChao time:2015-04-23,use my custom Keys. ORIG ++++ */
+//        Keys.setDefaults(mSettingsManager, mAppContext);
+        /* ZhangChao time:2015-04-23,use my custom Keys. START ++++ */
+        Keys_Plus.setDefaults(mSettingsManager, mAppContext);
+        /* ZhangChao time:2015-04-23,use my custom Keys. END ---- */
 
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.activity_main);
