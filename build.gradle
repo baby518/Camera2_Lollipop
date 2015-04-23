@@ -43,7 +43,7 @@ android {
             resources.srcDirs = ['src','src_pd','src_pd_gcam','src_ex']
             aidl.srcDirs = ['src','src_pd','src_pd_gcam','src_ex']
             renderscript.srcDirs = ['src','src_pd','src_pd_gcam','src_ex']
-            res.srcDirs = ['res','res_p']
+            res.srcDirs = ['res','res_p','res_plus']
             assets.srcDirs = ['assets']
             jniLibs.srcDirs = ['libs']
         }
