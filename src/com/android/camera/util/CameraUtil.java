@@ -516,7 +516,7 @@ public class CameraUtil {
         final double ASPECT_TOLERANCE;
         // HTC 4:3 ratios is over .01 from true 4:3, targeted fix for those
         // devices here, see b/18241645
-        if (ApiHelper.IS_HTC && targetRatio > 1.3433 && targetRatio < 1.35) {
+        if (targetRatio > 1.3433 && targetRatio < 1.35) {
             Log.w(TAG, "4:3 ratio out of normal tolerance, increasing tolerance to 0.02");
             ASPECT_TOLERANCE = 0.02;
         } else {
