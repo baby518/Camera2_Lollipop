@@ -1707,6 +1707,10 @@ public class CameraActivity extends QuickActivity
         mOrientationManager.pause();
         mPanoramaViewHelper.onPause();
 
+        /* ZhangChao time:2015-02-06,fix bug: stop record location here. START ++++ */
+        mLocationManager.recordLocation(false);
+        /* ZhangChao time:2015-02-06,fix bug: stop record location here. END ---- */
+
         mLocalImagesObserver.setForegroundChangeListener(null);
         mLocalImagesObserver.setActivityPaused(true);
         mLocalVideosObserver.setActivityPaused(true);
