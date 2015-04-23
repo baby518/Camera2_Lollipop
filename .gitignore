@@ -5,9 +5,14 @@
 **/*.iml
 .settings/
 bin/
-libs/
 gen/
+# ignore idea folder
 .idea/
-
+.gradle/
 # ignore OS X metadata
 .DS_Store
+/build/
+/gradle/
+/gradlew
+/gradlew.bat
+/local.properties
