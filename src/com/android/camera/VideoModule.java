@@ -93,7 +93,7 @@ public class VideoModule extends CameraModule
     MediaRecorder.OnErrorListener,
     MediaRecorder.OnInfoListener, FocusOverlayManager.Listener {
 
-    private static final String VIDEO_MODULE_STRING_ID = "VideoModule";
+    public static final String VIDEO_MODULE_STRING_ID = "VideoModule";
 
     private static final Log.Tag TAG = new Log.Tag(VIDEO_MODULE_STRING_ID);
 

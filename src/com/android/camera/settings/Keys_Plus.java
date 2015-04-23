@@ -28,6 +28,16 @@ import android.content.Context;
  * a setting is accessed by the SettingsManager API.
  */
 public class Keys_Plus extends Keys {
+    /** Need restore this keys which not in SettingActivity when click restore button.
+     *  Refer order of Keys.setDefaults() and Keys_Plus.setDefaults(),
+     *  KEY_CAMERA_ID is not need to restore. */
+    public static final String[] KEYS_FOR_RESTORE = {
+            KEY_COUNTDOWN_DURATION, KEY_SCENE_MODE, KEY_FLASH_MODE, KEY_CAMERA_HDR, KEY_FOCUS_MODE,
+            KEY_JPEG_QUALITY, KEY_VIDEOCAMERA_FLASH_MODE, KEY_VIDEO_EFFECT, KEY_CAMERA_GRID_LINES,
+            KEY_SHOULD_SHOW_REFOCUS_VIEWER_CLING, KEY_SHOULD_SHOW_SETTINGS_BUTTON_CLING,
+            KEY_HDR_PLUS_FLASH_MODE
+    };
+
     /**
      * Set some number of defaults for the defined keys.
      * It's not necessary to set all defaults.

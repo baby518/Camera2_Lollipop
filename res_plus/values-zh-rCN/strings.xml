@@ -15,5 +15,7 @@
  -->
 
 <resources>
-    <string name="pref_switcher_title">开关</string>
+     <string name="pref_switcher_title">开关</string>
+     <string name="restore_title">恢复默认值</string>
+     <string name="restore_message">设置项将恢复为默认</string>
 </resources>

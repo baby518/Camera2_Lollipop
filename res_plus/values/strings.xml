@@ -15,5 +15,7 @@
  -->
 
 <resources>
-    <string name="pref_switcher_title">Switchers</string>
+     <string name="pref_switcher_title">Switchers</string>
+     <string name="restore_title">Restore</string>
+     <string name="restore_message">Restore to default value.</string>
 </resources>

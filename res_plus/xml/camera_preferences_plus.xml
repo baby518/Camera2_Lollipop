@@ -59,4 +59,9 @@
                 android:key="pref_video_quality_front_key"
                 android:title="@string/setting_front_camera_video"/>
     </PreferenceCategory>
+
+    <!-- restore all preference to default. -->
+    <Preference
+            android:key="pref_restore"
+            android:title="@string/restore_title"/>
 </PreferenceScreen>

@@ -1,12 +1,19 @@
 package com.android.camera.settings;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Application;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.*;
 
+import com.android.camera.CameraActivity;
+import com.android.camera.PhotoModule;
+import com.android.camera.VideoModule;
+import com.android.camera.app.CameraApp;
 import com.android.camera.debug.Log;
 import com.android.camera.util.CameraSettingsActivityHelper;
 import com.android.camera2.R;
@@ -16,12 +23,15 @@ import com.android.ex.camera2.portability.Size;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class CameraSettingsFragment_Plus extends PreferenceFragment implements
         SharedPreferences.OnSharedPreferenceChangeListener {
 
     public static final String PREF_CATEGORY_RESOLUTION = "pref_category_resolution";
+    public static final String PREF_CATEGORY_SWITCHER = "pref_category_switcher";
+    public static final String PREF_CATEGORY_OPTION = "pref_category_option";
     private static final Log.Tag TAG = new Log.Tag("SettingsFragment");
     private static DecimalFormat sMegaPixelFormat = new DecimalFormat("##0.0");
     private String[] mCamcorderProfileNames;
@@ -37,6 +47,27 @@ public class CameraSettingsFragment_Plus extends PreferenceFragment implements
     private List<Size> mPictureSizesFront;
     private SettingsUtil.SelectedVideoQualities mVideoQualitiesBack;
     private SettingsUtil.SelectedVideoQualities mVideoQualitiesFront;
+
+    /* ZhangChao time:2015-02-11,used for restore preferences. START ++++ */
+    public static final String KEY_RESTORE = "pref_restore";
+    public static final String MODULE_SCOPE_PREFIX = CameraActivity.MODULE_SCOPE_PREFIX;
+    public static final String CAMERA_SCOPE_PREFIX = CameraActivity.CAMERA_SCOPE_PREFIX;
+    public static final String[] MODULE_STRING_IDS = {
+            PhotoModule.PHOTO_MODULE_STRING_ID,
+            VideoModule.VIDEO_MODULE_STRING_ID
+    };
+
+    public static final String[] MODULE_STRING_IDS_UNIQUE = FILTER_DUP_IN_ARRAY(MODULE_STRING_IDS);
+
+    /** filter duplicate items in array. */
+    public static String[] FILTER_DUP_IN_ARRAY(String[] array) {
+        List<String> list = new LinkedList<>();
+        for (String str : array) {
+            if (!list.contains(str)) list.add(str);
+        }
+        return list.toArray(new String[list.size()]);
+    }
+    /* ZhangChao time:2015-02-11,used for restore preferences. END ++++ */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,6 +117,30 @@ public class CameraSettingsFragment_Plus extends PreferenceFragment implements
                 (PreferenceCategory) findPreference(PREF_CATEGORY_RESOLUTION);
         fillEntriesAndSummaries(resolutionCategory);
         /* ZhangChao time:2015-02-11,use Category instead. END ---- */
+
+        /* ZhangChao time:2015-02-10,add restore preferences function. START ++++ */
+        Preference restorePref = findPreference(KEY_RESTORE);
+        if (restorePref != null) {
+            restorePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    new AlertDialog.Builder(getActivity()).setTitle(R.string.restore_title)
+                            .setMessage(R.string.restore_message)
+                            .setPositiveButton(R.string.dialog_ok,
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            restorePreferences(getSettingsManager());
+                                            dialog.dismiss();
+                                        }
+                                    })
+                            .setNegativeButton(R.string.dialog_cancel, null).show();
+                    return true;
+                }
+            });
+        }
+        /* ZhangChao time:2015-02-10,add restore preferences function. END ---- */
+
         getPreferenceScreen().getSharedPreferences()
                 .registerOnSharedPreferenceChangeListener(this);
     }
@@ -98,6 +153,87 @@ public class CameraSettingsFragment_Plus extends PreferenceFragment implements
         intent.putExtra(CameraSettingsActivity.PREF_SCREEN_EXTRA, preferenceScreen.getKey());
         preferenceScreen.setIntent(intent);
     }
+
+    /* ZhangChao time:2015-02-11,used for restore preferences. START ++++ */
+    private SettingsManager getSettingsManager() {
+        Application application = getActivity().getApplication();
+        if (application instanceof CameraApp) {
+            return ((CameraApp) application).getSettingsManager();
+        }
+        return null;
+    }
+    private void restorePreferences(SettingsManager settingsManager) {
+        final PreferenceCategory resolutionCategory =
+                (PreferenceCategory) findPreference(PREF_CATEGORY_RESOLUTION);
+        final PreferenceCategory switcherCategory =
+                (PreferenceCategory) findPreference(PREF_CATEGORY_SWITCHER);
+        final PreferenceCategory optionCategory =
+                (PreferenceCategory) findPreference(PREF_CATEGORY_OPTION);
+
+        restorePreferencesInSettingActivity(settingsManager, switcherCategory);
+        restorePreferencesInSettingActivity(settingsManager, resolutionCategory);
+        restorePreferencesInSettingActivity(settingsManager, optionCategory);
+
+        restorePreferencesInGlobal(settingsManager, Keys_Plus.KEYS_FOR_RESTORE);
+
+        if (mInfos != null) {
+            // Back camera.
+            int backCameraId = SettingsUtil.getCameraId(mInfos, SettingsUtil.CAMERA_FACING_BACK);
+            // Front camera.
+            int frontCameraId = SettingsUtil.getCameraId(mInfos, SettingsUtil.CAMERA_FACING_FRONT);
+
+            restorePreferencesInCameraScope(settingsManager, backCameraId, Keys_Plus.KEYS_FOR_RESTORE);
+            restorePreferencesInCameraScope(settingsManager, frontCameraId, Keys_Plus.KEYS_FOR_RESTORE);
+        }
+
+        for (String moduleId : MODULE_STRING_IDS_UNIQUE) {
+            restorePreferencesInModuleScope(settingsManager, moduleId, Keys_Plus.KEYS_FOR_RESTORE);
+        }
+    }
+
+    private void restorePreferencesInSettingActivity(SettingsManager settingsManager, PreferenceGroup group) {
+        if (group == null) return;
+        for (int i = 0; i < group.getPreferenceCount(); ++i) {
+            Preference pref = group.getPreference(i);
+            String key = pref.getKey();
+            if (pref instanceof PreferenceGroup) {
+                restorePreferencesInSettingActivity(settingsManager, (PreferenceGroup) pref);
+            } else if (pref instanceof SwitchPreference) {
+                ((SwitchPreference) pref).setChecked(settingsManager.getBooleanDefault(key));
+            } else if (pref instanceof ListPreference) {
+                String defaultValue = settingsManager.getStringDefault(key);
+                if (defaultValue == null) {
+                    // defaultValue is null, such as picture size, so set first index here;
+                    defaultValue = ((ListPreference) pref).getEntryValues()[0].toString();
+                }
+                ((ListPreference) pref).setValue(defaultValue);
+            }
+        }
+    }
+
+    private void restorePreferencesInScope(SettingsManager settingsManager, String scope, String[] keys) {
+        for (String key : keys) {
+            String currentValue = settingsManager.getString(scope, key, null);
+            if (currentValue != null) {
+                settingsManager.setToDefault(scope, key);
+            }
+        }
+    }
+
+    private void restorePreferencesInGlobal(SettingsManager settingsManager, String[] keys) {
+        restorePreferencesInScope(settingsManager, SettingsManager.SCOPE_GLOBAL, keys);
+    }
+
+    private void restorePreferencesInCameraScope(SettingsManager settingsManager, int cameraId, String[] keys) {
+        String cameraScope = CAMERA_SCOPE_PREFIX + Integer.toString(cameraId);
+        restorePreferencesInScope(settingsManager, cameraScope, keys);
+    }
+
+    private void restorePreferencesInModuleScope(SettingsManager settingsManager, String moduleId, String[] keys) {
+        String moduleScope = MODULE_SCOPE_PREFIX + moduleId;
+        restorePreferencesInScope(settingsManager, moduleScope, keys);
+    }
+    /* ZhangChao time:2015-02-11,used for restore preferences. END ++++ */
 
     /**
      * This override allows the CameraSettingsFragment to be reused for
