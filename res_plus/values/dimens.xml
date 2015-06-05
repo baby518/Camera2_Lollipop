@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--  Copyright (C) 2007 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2013, The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -12,15 +12,8 @@
      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
      See the License for the specific language governing permissions and
      limitations under the License.
- -->
-
+-->
 <resources>
-     <string name="pref_switcher_title">開關</string>
-     <string name="restore_title">恢復默認值</string>
-     <string name="restore_message">設置項將恢復爲默認</string>
-
-    <!--  Separate Metering properties   -->
-    <string name="pref_camera_separate_metering_title">對焦測光分離</string>
-    <string name="toast_auto_exposure_lock_on">測光鎖定</string>
-    <string name="toast_auto_exposure_lock_off">取消測光鎖定</string>
+    <dimen name="metering_indicator_size">80dp</dimen>
+    <dimen name="focus_switcher_indicator_size">40dp</dimen>
 </resources>

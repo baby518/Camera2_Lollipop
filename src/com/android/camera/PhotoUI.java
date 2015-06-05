@@ -60,7 +60,7 @@ public class PhotoUI implements PreviewStatusListener,
     private final PreviewOverlay mPreviewOverlay;
     private final FocusUI mFocusUI;
     private final CameraActivity mActivity;
-    private final PhotoController mController;
+    /*private */final PhotoController mController;
 
     private final View mRootView;
     private Dialog mDialog = null;

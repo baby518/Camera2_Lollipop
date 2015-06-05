@@ -68,48 +68,48 @@ public class FocusOverlayManager implements PreviewStatusListener.PreviewAreaCha
         MotionManager.MotionListener {
     private static final Log.Tag TAG = new Log.Tag("FocusOverlayMgr");
 
-    private static final int RESET_TOUCH_FOCUS = 0;
+    /*private */static final int RESET_TOUCH_FOCUS = 0;
 
     private static final int RESET_TOUCH_FOCUS_DELAY_MILLIS = Settings3A.getFocusHoldMillis();
 
     public static final float AF_REGION_BOX = Settings3A.getAutoFocusRegionWidth();
     public static final float AE_REGION_BOX = Settings3A.getMeteringRegionWidth();
 
-    private int mState = STATE_IDLE;
-    private static final int STATE_IDLE = 0; // Focus is not active.
-    private static final int STATE_FOCUSING = 1; // Focus is in progress.
+    /*private */int mState = STATE_IDLE;
+    /*private */static final int STATE_IDLE = 0; // Focus is not active.
+    /*private */static final int STATE_FOCUSING = 1; // Focus is in progress.
     // Focus is in progress and the camera should take a picture after focus finishes.
-    private static final int STATE_FOCUSING_SNAP_ON_FINISH = 2;
-    private static final int STATE_SUCCESS = 3; // Focus finishes and succeeds.
-    private static final int STATE_FAIL = 4; // Focus finishes and fails.
+    /*private */static final int STATE_FOCUSING_SNAP_ON_FINISH = 2;
+    /*private */static final int STATE_SUCCESS = 3; // Focus finishes and succeeds.
+    /*private */static final int STATE_FAIL = 4; // Focus finishes and fails.
 
-    private boolean mInitialized;
-    private boolean mFocusAreaSupported;
-    private boolean mMeteringAreaSupported;
-    private boolean mLockAeAwbNeeded;
+    /*private */boolean mInitialized;
+    /*private */boolean mFocusAreaSupported;
+    /*private */boolean mMeteringAreaSupported;
+    /*private */boolean mLockAeAwbNeeded;
     private boolean mAeAwbLock;
     private final Matrix mMatrix;
 
     private boolean mMirror; // true if the camera is front-facing.
     private int mDisplayOrientation;
-    private List<Area> mFocusArea; // focus area in driver format
-    private List<Area> mMeteringArea; // metering area in driver format
+    /*private */List<Area> mFocusArea; // focus area in driver format
+    /*private */List<Area> mMeteringArea; // metering area in driver format
     private CameraCapabilities.FocusMode mFocusMode;
     private final List<CameraCapabilities.FocusMode> mDefaultFocusModes;
     private CameraCapabilities.FocusMode mOverrideFocusMode;
     private CameraCapabilities mCapabilities;
-    private final AppController mAppController;
+    /*private */final AppController mAppController;
     private final SettingsManager mSettingsManager;
-    private final Handler mHandler;
+    /*private */final Handler mHandler;
     Listener mListener;
     private boolean mPreviousMoving;
-    private final FocusUI mUI;
-    private final Rect mPreviewRect = new Rect(0, 0, 0, 0);
-    private boolean mFocusLocked;
+    /*private */final FocusUI mUI;
+    /*private */final Rect mPreviewRect = new Rect(0, 0, 0, 0);
+    /*private */boolean mFocusLocked;
 
     /** Manual tap to focus parameters */
-    private TouchCoordinate mTouchCoordinate;
-    private long mTouchTime;
+    /*private */TouchCoordinate mTouchCoordinate;
+    /*private */long mTouchTime;
 
     public  interface FocusUI {
         public boolean hasFaces();
@@ -238,14 +238,14 @@ public class FocusOverlayManager implements PreviewStatusListener.PreviewAreaCha
         }
     }
 
-    private void lockAeAwbIfNeeded() {
+    /*private */void lockAeAwbIfNeeded() {
         if (mLockAeAwbNeeded && !mAeAwbLock) {
             mAeAwbLock = true;
             mListener.setFocusParameters();
         }
     }
 
-    private void unlockAeAwbIfNeeded() {
+    /*private */void unlockAeAwbIfNeeded() {
         if (mLockAeAwbNeeded && mAeAwbLock && (mState != STATE_FOCUSING_SNAP_ON_FINISH)) {
             mAeAwbLock = false;
             mListener.setFocusParameters();
@@ -368,7 +368,7 @@ public class FocusOverlayManager implements PreviewStatusListener.PreviewAreaCha
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-    private void initializeFocusAreas(int x, int y) {
+    /*private */void initializeFocusAreas(int x, int y) {
         if (mFocusArea == null) {
             mFocusArea = new ArrayList<Area>();
             mFocusArea.add(new Area(new Rect(), 1));
@@ -379,7 +379,7 @@ public class FocusOverlayManager implements PreviewStatusListener.PreviewAreaCha
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-    private void initializeMeteringAreas(int x, int y) {
+    /*private */void initializeMeteringAreas(int x, int y) {
         if (mMeteringArea == null) {
             mMeteringArea = new ArrayList<Area>();
             mMeteringArea.add(new Area(new Rect(), 1));
@@ -475,7 +475,7 @@ public class FocusOverlayManager implements PreviewStatusListener.PreviewAreaCha
      * Triggers the autofocus and set the state to indicate the focus is in
      * progress.
      */
-    private void autoFocus() {
+    /*private */void autoFocus() {
         autoFocus(STATE_FOCUSING);
     }
 

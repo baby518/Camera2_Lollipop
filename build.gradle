@@ -4,7 +4,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.0'
+        classpath 'com.android.tools.build:gradle:1.2.3'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -19,6 +19,10 @@ allprojects {
 // app config
 apply plugin: 'com.android.application'
 
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
@@ -26,8 +30,8 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionCode 20150605
+        versionName "1.0.3"
     }
     buildTypes {
         release {
@@ -39,10 +43,10 @@ android {
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
-            java.srcDirs = ['src','src_pd','src_pd_gcam','src_ex']
-            resources.srcDirs = ['src','src_pd','src_pd_gcam','src_ex']
-            aidl.srcDirs = ['src','src_pd','src_pd_gcam','src_ex']
-            renderscript.srcDirs = ['src','src_pd','src_pd_gcam','src_ex']
+            java.srcDirs = ['src','src_pd','src_pd_gcam','src_ex','src_plus']
+            resources.srcDirs = ['src','src_pd','src_pd_gcam','src_ex','src_plus']
+            aidl.srcDirs = ['src','src_pd','src_pd_gcam','src_ex','src_plus']
+            renderscript.srcDirs = ['src','src_pd','src_pd_gcam','src_ex','src_plus']
             res.srcDirs = ['res','res_p','res_plus']
             assets.srcDirs = ['assets']
             jniLibs.srcDirs = ['libs']
@@ -57,8 +61,4 @@ android {
         debug.setRoot('build-types/debug')
         release.setRoot('build-types/release')
     }
-}
-
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
 }

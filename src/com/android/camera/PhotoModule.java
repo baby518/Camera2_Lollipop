@@ -128,14 +128,14 @@ public class PhotoModule
 
     private static final String DEBUG_IMAGE_PREFIX = "DEBUG_";
 
-    private CameraActivity mActivity;
-    private CameraProxy mCameraDevice;
+    /*private */CameraActivity mActivity;
+    /*private */CameraProxy mCameraDevice;
     private int mCameraId;
-    private CameraCapabilities mCameraCapabilities;
-    private CameraSettings mCameraSettings;
+    /*private */CameraCapabilities mCameraCapabilities;
+    /*private */CameraSettings mCameraSettings;
     private boolean mPaused;
 
-    private PhotoUI mUI;
+    /*private */PhotoUI mUI;
 
     // The activity is going to switch to the specified camera id. This is
     // needed because texture copy is done in GL thread. -1 means camera is not
@@ -196,7 +196,7 @@ public class PhotoModule
     // The value for cameradevice.CameraSettings.setPhotoRotationDegrees.
     private int mJpegRotation;
     // Indicates whether we are using front camera
-    private boolean mMirror;
+    /*private */boolean mMirror;
     private boolean mFirstTimeInitialized;
     private boolean mIsImageCaptureIntent;
 
@@ -205,7 +205,7 @@ public class PhotoModule
 
     private ContentResolver mContentResolver;
 
-    private AppController mAppController;
+    /*private */AppController mAppController;
 
     private final PostViewPictureCallback mPostViewPictureCallback =
             new PostViewPictureCallback();
@@ -238,7 +238,7 @@ public class PhotoModule
     public long mCaptureStartTime;
 
     // This handles everything about focus.
-    private FocusOverlayManager mFocusManager;
+    /*private */FocusOverlayManager mFocusManager;
 
     private final int mGcamModeIndex;
     private SoundPlayer mCountdownSoundPlayer;
@@ -419,7 +419,11 @@ public class PhotoModule
         // rid of passing in the activity directly.
         mAppController = mActivity;
 
-        mUI = new PhotoUI(mActivity, this, mActivity.getModuleLayoutRoot());
+        /* ZhangChao time:2015-06-03,use my custom photo ui. ORIG ++++ */
+//        mUI = new PhotoUI(mActivity, this, mActivity.getModuleLayoutRoot());
+        /* ZhangChao time:2015-06-03,use my custom photo ui. START ++++ */
+        mUI = new PhotoUI_Plus(mActivity, this, mActivity.getModuleLayoutRoot());
+        /* ZhangChao time:2015-06-03,use my custom photo ui. END ---- */
         mActivity.setPreviewStatusListener(mUI);
 
         SettingsManager settingsManager = mActivity.getSettingsManager();
@@ -476,7 +480,7 @@ public class PhotoModule
         }
     }
 
-    private void onPreviewStarted() {
+    /*private */void onPreviewStarted() {
         mAppController.onPreviewStarted();
         mAppController.setShutterEnabled(true);
         setCameraState(IDLE);
@@ -1632,7 +1636,7 @@ public class PhotoModule
     /**
      * @return Whether the currently active camera is front-facing.
      */
-    private boolean isCameraFrontFacing() {
+    /*private */boolean isCameraFrontFacing() {
         return mAppController.getCameraProvider().getCharacteristics(mCameraId)
                 .isFacingFront();
     }
@@ -1641,7 +1645,7 @@ public class PhotoModule
      * The focus manager is the first UI related element to get initialized, and
      * it requires the RenderOverlay, so initialize it here
      */
-    private void initializeFocusManager() {
+    /*private */void initializeFocusManager() {
         // Create FocusManager object. startPreview needs it.
         // if mFocusManager not null, reuse it
         // otherwise create a new instance
@@ -2073,7 +2077,7 @@ public class PhotoModule
         }
     }
 
-    private void setMeteringAreasIfSupported() {
+    /*private */void setMeteringAreasIfSupported() {
         if (mMeteringAreaSupported) {
             mCameraSettings.setMeteringAreas(mFocusManager.getMeteringAreas());
         }

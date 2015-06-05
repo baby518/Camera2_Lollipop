@@ -28,6 +28,7 @@ import android.content.Context;
  * a setting is accessed by the SettingsManager API.
  */
 public class Keys_Plus extends Keys {
+    public static final String KEY_CAMERA_SEPARATE_METERING = "pref_camera_separate_metering";
     /** Need restore this keys which not in SettingActivity when click restore button.
      *  Refer order of Keys.setDefaults() and Keys_Plus.setDefaults(),
      *  KEY_CAMERA_ID is not need to restore. */
@@ -45,6 +46,7 @@ public class Keys_Plus extends Keys {
     public static void setDefaults(SettingsManager settingsManager, Context context) {
         Keys.setDefaults(settingsManager, context);
         settingsManager.setDefaults(KEY_EXPOSURE_COMPENSATION_ENABLED, true);
+        settingsManager.setDefaults(KEY_CAMERA_SEPARATE_METERING, false);
     }
 }
 

@@ -29,6 +29,11 @@
                 android:defaultValue="true"
                 android:key="pref_camera_exposure_compensation_key"
                 android:title="@string/pref_camera_exposure_compensation"/>
+        <!-- Separate Metering -->
+        <com.android.camera.settings.ManagedSwitchPreference
+                android:defaultValue="false"
+                android:key="pref_camera_separate_metering"
+                android:title="@string/pref_camera_separate_metering_title"/>
     </PreferenceCategory>
     <PreferenceCategory
             android:key="pref_category_resolution"

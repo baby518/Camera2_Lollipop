@@ -18,4 +18,9 @@
      <string name="pref_switcher_title">开关</string>
      <string name="restore_title">恢复默认值</string>
      <string name="restore_message">设置项将恢复为默认</string>
+
+     <!--  Separate Metering properties   -->
+    <string name="pref_camera_separate_metering_title">对焦测光分离</string>
+    <string name="toast_auto_exposure_lock_on">测光锁定</string>
+    <string name="toast_auto_exposure_lock_off">取消测光锁定</string>
 </resources>

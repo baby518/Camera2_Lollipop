@@ -43,8 +43,8 @@ public class FocusOverlay extends View implements FocusOverlayManager.FocusUI {
     private final static int FOCUS_DURATION_MS = 500;
     private final static int FOCUS_INDICATOR_ROTATION_DEGREES = 50;
 
-    private final Drawable mFocusIndicator;
-    private Drawable mFocusOuterRing;
+    /*private final */Drawable mFocusIndicator;
+    /*private */Drawable mFocusOuterRing;
     private final Rect mBounds = new Rect();
     private final ValueAnimator mFocusAnimation = new ValueAnimator();
 
@@ -63,8 +63,8 @@ public class FocusOverlay extends View implements FocusOverlayManager.FocusUI {
     private int mPositionY;
     private int mAngle;
     private final int mFocusIndicatorSize;
-    private boolean mShowIndicator;
-    private final int mFocusOuterRingSize;
+    /*private */boolean mShowIndicator;
+    /*private */final int mFocusOuterRingSize;
 
     public FocusOverlay(Context context, AttributeSet attrs) {
         super(context, attrs);

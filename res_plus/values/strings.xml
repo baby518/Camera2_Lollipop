@@ -18,4 +18,9 @@
      <string name="pref_switcher_title">Switchers</string>
      <string name="restore_title">Restore</string>
      <string name="restore_message">Restore to default value.</string>
+
+     <!--  Separate Metering properties   -->
+     <string name="pref_camera_separate_metering_title">Separate Metering</string>
+     <string name="toast_auto_exposure_lock_on">AE Locked</string>
+     <string name="toast_auto_exposure_lock_off">AE Unlocked</string>
 </resources>

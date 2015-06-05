@@ -39,7 +39,7 @@ public class ModulesInfo {
     private static final Log.Tag TAG = new Log.Tag("ModulesInfo");
 
     /** Selects CaptureModule if true, PhotoModule if false. */
-    private static final boolean ENABLE_CAPTURE_MODULE =
+    /*private */static final boolean ENABLE_CAPTURE_MODULE =
             DebugPropertyHelper.isCaptureModuleEnabled();
 
     public static void setupModules(Context context, ModuleManager moduleManager) {
@@ -87,7 +87,7 @@ public class ModulesInfo {
         });
     }
 
-    private static void registerVideoModule(ModuleManager moduleManager, final int moduleId) {
+    /*private */static void registerVideoModule(ModuleManager moduleManager, final int moduleId) {
         moduleManager.registerModule(new ModuleManager.ModuleAgent() {
             @Override
             public int getModuleId() {

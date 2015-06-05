@@ -103,6 +103,7 @@ import com.android.camera.hardware.HardwareSpec;
 import com.android.camera.hardware.HardwareSpecImpl;
 import com.android.camera.module.ModuleController;
 import com.android.camera.module.ModulesInfo;
+import com.android.camera.module.ModulesInfo_Plus;
 import com.android.camera.one.OneCameraException;
 import com.android.camera.one.OneCameraManager;
 import com.android.camera.session.CaptureSession;
@@ -1393,7 +1394,11 @@ public class CameraActivity extends QuickActivity
         // possible so we can call module.init() at the earliest time.
         mModuleManager = new ModuleManagerImpl();
         GcamHelper.init(getContentResolver());
-        ModulesInfo.setupModules(mAppContext, mModuleManager);
+        /* ZhangChao time:2015-06-03,use my custom modules. ORIG ++++ */
+//        ModulesInfo.setupModules(mAppContext, mModuleManager);
+        /* ZhangChao time:2015-06-03,use my custom modules. START ++++ */
+        ModulesInfo_Plus.setupModules(mAppContext, mModuleManager);
+        /* ZhangChao time:2015-06-03,use my custom modules. END ---- */
 
         mSettingsManager = getServices().getSettingsManager();
         AppUpgrader appUpgrader = new AppUpgrader(this);
@@ -1405,7 +1410,11 @@ public class CameraActivity extends QuickActivity
         /* ZhangChao time:2015-04-23,use my custom Keys. END ---- */
 
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
-        setContentView(R.layout.activity_main);
+        /* ZhangChao time:2015-06-03,use my custom layout. ORIG ++++ */
+//        setContentView(R.layout.activity_main);
+        /* ZhangChao time:2015-06-03,use my custom layout. START ++++ */
+        setContentView(R.layout.activity_main_plus);
+        /* ZhangChao time:2015-06-03,use my custom layout. END ---- */
 
         mActionBar = getActionBar();
         // set actionbar background to 100% or 50% transparent
