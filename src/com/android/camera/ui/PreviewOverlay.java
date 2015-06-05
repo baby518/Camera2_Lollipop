@@ -59,7 +59,7 @@ public class PreviewOverlay extends View
     /** Next time zoom change should be sent to listener. */
     private long mDelayZoomCallUntilMillis = 0;
     private final ZoomGestureDetector mScaleDetector;
-    private final ZoomProcessor mZoomProcessor = new ZoomProcessor();
+    /*private*/ final ZoomProcessor mZoomProcessor = new ZoomProcessor();
     private GestureDetector mGestureDetector = null;
     private View.OnTouchListener mTouchListener = null;
     private OnZoomChangedListener mZoomListener = null;
@@ -215,7 +215,7 @@ public class PreviewOverlay extends View
      * This class processes recognized scale gestures, notifies {@link OnZoomChangedListener}
      * of any change in scale, and draw the zoom UI on screen.
      */
-    private class ZoomProcessor implements ScaleGestureDetector.OnScaleGestureListener {
+    /*private*/ class ZoomProcessor implements ScaleGestureDetector.OnScaleGestureListener {
         private final Log.Tag TAG = new Log.Tag("ZoomProcessor");
 
         // Diameter of Zoom UI as fraction of maximum possible without clipping.
@@ -226,8 +226,8 @@ public class PreviewOverlay extends View
         private final float mMinRatio = 1.0f;
         private float mMaxRatio;
         // Continuous Zoom level [0,1].
-        private float mCurrentRatio;
-        private double mFingerAngle;  // in radians.
+        /*private*/ float mCurrentRatio;
+        /*private*/ double mFingerAngle;  // in radians.
         private final Paint mPaint;
         private int mCenterX;
         private int mCenterY;
