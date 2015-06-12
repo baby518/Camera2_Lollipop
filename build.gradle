@@ -30,7 +30,7 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 22
-        versionCode 20150605
+        versionCode getCurrentDate() as int
         versionName "1.0.3"
     }
     buildTypes {
@@ -61,4 +61,9 @@ android {
         debug.setRoot('build-types/debug')
         release.setRoot('build-types/release')
     }
+}
+
+def getCurrentDate() {
+    def now = new Date().format('yyyyMMddhh');
+    return now;
 }
