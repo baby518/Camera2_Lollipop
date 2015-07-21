@@ -38,6 +38,7 @@ import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.hardware.Camera;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcAdapter.CreateBeamUrisCallback;
@@ -102,7 +103,6 @@ import com.android.camera.filmstrip.FilmstripController;
 import com.android.camera.hardware.HardwareSpec;
 import com.android.camera.hardware.HardwareSpecImpl;
 import com.android.camera.module.ModuleController;
-import com.android.camera.module.ModulesInfo;
 import com.android.camera.module.ModulesInfo_Plus;
 import com.android.camera.one.OneCameraException;
 import com.android.camera.one.OneCameraManager;
@@ -236,6 +236,12 @@ public class CameraActivity extends QuickActivity
     private LocalMediaObserver mLocalVideosObserver;
 
     private boolean mPendingDeletion = false;
+
+    /** ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+    /** open camera on CameraActivity's OnCreate, decrease open camera's time. */
+    public static final boolean OPEN_CAMERA_ON_CREATE = true;
+    public boolean mIsCameraOpening = false;
+    /** ------------------------------------------------------------------ */
 
     private CameraController mCameraController;
     private boolean mPaused;
@@ -474,6 +480,9 @@ public class CameraActivity extends QuickActivity
 
     @Override
     public void onCameraOpened(CameraAgent.CameraProxy camera) {
+        if (OPEN_CAMERA_ON_CREATE) {
+            mIsCameraOpening = false;
+        }
         Log.v(TAG, "onCameraOpened");
         if (mPaused) {
             // We've paused, but just asynchronously opened the camera. Close it
@@ -1390,6 +1399,22 @@ public class CameraActivity extends QuickActivity
             return;
         }
 
+        if (OPEN_CAMERA_ON_CREATE) {
+            mMainHandler = new MainHandler(this, getMainLooper());
+            mCameraController = new CameraController(mAppContext, this, mMainHandler,
+                    CameraAgentFactory.getAndroidCameraAgent(mAppContext,
+                            CameraAgentFactory.CameraApi.API_1),
+                    CameraAgentFactory.getAndroidCameraAgent(mAppContext,
+                            CameraAgentFactory.CameraApi.AUTO));
+            mCameraController.setCameraExceptionHandler(
+                    new CameraExceptionHandler(mCameraExceptionCallback, mMainHandler));
+
+            int cameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
+            mCameraController.requestCamera(cameraId,
+                    com.android.camera.util.GservicesHelper.useCamera2ApiThroughPortabilityLayer(this));
+            mIsCameraOpening = true;
+        }
+
         // TODO: Try to move all the resources allocation to happen as soon as
         // possible so we can call module.init() at the earliest time.
         mModuleManager = new ModuleManagerImpl();
@@ -1424,14 +1449,16 @@ public class CameraActivity extends QuickActivity
             mActionBar.setBackgroundDrawable(new ColorDrawable(0x80000000));
         }
 
-        mMainHandler = new MainHandler(this, getMainLooper());
-        mCameraController = new CameraController(mAppContext, this, mMainHandler,
-                CameraAgentFactory.getAndroidCameraAgent(mAppContext,
-                        CameraAgentFactory.CameraApi.API_1),
-                CameraAgentFactory.getAndroidCameraAgent(mAppContext,
-                        CameraAgentFactory.CameraApi.AUTO));
-        mCameraController.setCameraExceptionHandler(
-                new CameraExceptionHandler(mCameraExceptionCallback, mMainHandler));
+        if (!OPEN_CAMERA_ON_CREATE) {
+            mMainHandler = new MainHandler(this, getMainLooper());
+            mCameraController = new CameraController(mAppContext, this, mMainHandler,
+                    CameraAgentFactory.getAndroidCameraAgent(mAppContext,
+                            CameraAgentFactory.CameraApi.API_1),
+                    CameraAgentFactory.getAndroidCameraAgent(mAppContext,
+                            CameraAgentFactory.CameraApi.AUTO));
+            mCameraController.setCameraExceptionHandler(
+                    new CameraExceptionHandler(mCameraExceptionCallback, mMainHandler));
+        }
 
         mModeListView = (ModeListView) findViewById(R.id.mode_list_layout);
         mModeListView.init(mModuleManager.getSupportedModeIndexList());
