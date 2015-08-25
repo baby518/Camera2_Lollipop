@@ -1269,14 +1269,8 @@ public class CameraActivity extends QuickActivity
 
     private void removeData(int dataID) {
         mDataAdapter.removeData(dataID);
-        /* ZhangChao time:2015-03-06,
-        fix: when gallery has only 2 pictures. "undo" button isn't shown when delete last picture. ORIG ++++ */
-//        if (mDataAdapter.getTotalNumber() > 1) {
-        /* ZhangChao time:2015-03-06,
-        fix: when gallery has only 2 pictures. "undo" button isn't shown when delete last picture. START ++++ */
-        if (mDataAdapter.getTotalNumber() >= 1) {
-        /* ZhangChao time:2015-03-06,
-        fix: when gallery has only 2 pictures. "undo" button isn't shown when delete last picture. END ---- */
+        final int placeholders = mSecureCamera ? 1 : 0;
+        if (mDataAdapter.getTotalNumber() > placeholders) {
             showUndoDeletionBar();
         } else {
             // If camera preview is the only view left in filmstrip,
